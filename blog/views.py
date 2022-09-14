@@ -1,15 +1,25 @@
-from django.shortcuts import render, redirect
-from django.views.generic import View
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import View, UpdateView
 from .forms import PostCreateForm
 from .models import Post
+from django.urls import reverse_lazy
 
 
 class BlogListView(View):
     def get(self, request, *args, **kwargs):
+        post = Post.objects.all()
         context={
-
+            'post':post
         }
         return render(request, 'blog_list.html', context)
+
+class BlogDetailView(View):
+    def get(self, request, pk, *args, **kwargs):
+        post=get_object_or_404(Post, pk=pk)
+        context={
+            'post':post
+        }
+        return render(request, 'blog_detail.html', context)
 
 class BlogCreateView(View):
     def get(self, request, *args, **kwargs):
